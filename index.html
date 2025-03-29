@@ -1,1 +1,123 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer of Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            flex: 1;
+        }
+        .options {
+            display: flex;
+            gap: 10px;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #fff;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option-label:hover, .option-label input:checked + span {
+            background-color: green;
+            color: white;
+            border-color: green;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Answer of Questions</h1>
+        <div class="controls">
+            <label for="numQuestions">Select number of questions:</label>
+            <input type="number" id="numQuestions" min="1" max="10" value="1">
+            <button onclick="generateQuestions()">Generate</button>
+            <br><br>
+            <label for="multiSelect">Allow multiple answers:</label>
+            <input type="checkbox" id="multiSelect" onchange="toggleSelectionMode()">
+        </div>
+        <div id="questions"></div>
+    </div>
+    
+    <script>
+        let multiSelectMode = false;
+        
+        function toggleSelectionMode() {
+            multiSelectMode = document.getElementById("multiSelect").checked;
+        }
+        
+        function generateQuestions() {
+            let num = document.getElementById("numQuestions").value;
+            let container = document.getElementById("questions");
+            container.innerHTML = "";
+            
+            for (let i = 1; i <= num; i++) {
+                let questionDiv = document.createElement("div");
+                questionDiv.classList.add("question-container");
+                
+                let questionText = document.createElement("div");
+                questionText.classList.add("question-text");
+                questionText.innerHTML = `Question ${i}`;
+                
+                let optionsDiv = document.createElement("div");
+                optionsDiv.classList.add("options");
+                let options = ['A', 'B', 'C', 'D', 'E'];
+                
+                options.forEach(option => {
+                    let label = document.createElement("label");
+                    label.classList.add("option-label");
+                    
+                    let input = document.createElement("input");
+                    input.type = multiSelectMode ? "checkbox" : "radio";
+                    input.name = `question${i}`;
+                    input.value = option;
+                    
+                    let span = document.createElement("span");
+                    span.textContent = option;
+                    
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    optionsDiv.appendChild(label);
+                });
+                
+                questionDiv.appendChild(questionText);
+                questionDiv.appendChild(optionsDiv);
+                container.appendChild(questionDiv);
+            }
+        }
+    </script>
+</body>
+</html>
